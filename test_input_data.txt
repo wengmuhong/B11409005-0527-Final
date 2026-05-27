@@ -1,0 +1,7 @@
+add 深入淺出Python/978001/available
+add 資料結構理論/978002/available
+add 演算法實作/978003/available
+add 重複測試書/978001/available
+borrow 978002
+show
+exit
