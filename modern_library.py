@@ -69,13 +69,16 @@ class Library:
         self.books.append(Book(title=title, isbn=isbn, status=status))
         return True
 
-    def borrow_book(self, isbn: str) -> bool:
+    def borrow_book(self, isbn: str) -> str:
         book = self.find_book(isbn)
         if book is None:
-            return False
+            return "not_found"
+
+        if book.status == "borrowed":
+            return "already_borrowed"
 
         book.status = "borrowed"
-        return True
+        return "updated"
 
     def show_books(self) -> None:
         if not self.books:
@@ -107,6 +110,10 @@ def main() -> None:
             op = input("> ").strip()
         except EOFError:
             print("\n輸入結束，關閉程式。")
+            if library.save():
+                print("系統關閉，資料已儲存。")
+            else:
+                print("系統關閉，但儲存資料失敗。")
             break
 
         if op == "exit":
@@ -139,8 +146,11 @@ def main() -> None:
                 print("Format Error: borrow 指令格式為 borrow ISBN")
                 continue
 
-            if library.borrow_book(isbn):
+            result = library.borrow_book(isbn)
+            if result == "updated":
                 print("Updated")
+            elif result == "already_borrowed":
+                print("Already Borrowed")
             else:
                 print("ISBN Not Found")
             continue
